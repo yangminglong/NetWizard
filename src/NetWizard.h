@@ -38,6 +38,7 @@ Upgrade to NetWizard Pro: https://netwizard.pro
 #include "vector.h"
 #include <functional>
 #include "Preferences.h"
+#include "ArduinoJson.h"
 
 #if defined(ESP8266)
   #include "ESP8266WiFi.h"
@@ -84,7 +85,6 @@ Upgrade to NetWizard Pro: https://netwizard.pro
 #endif
 
 #include "DNSServer.h"
-#include "ArduinoJson.h"
 #include "NetWizardParameter.h"
 
 // enum for strategy
