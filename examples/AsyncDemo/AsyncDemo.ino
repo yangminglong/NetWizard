@@ -38,6 +38,7 @@
 #endif
 #include <ESPAsyncWebServer.h>
 #include <NetWizard.h>
+#include <ArduinoJson.h>
 
 
 AsyncWebServer server(80);
