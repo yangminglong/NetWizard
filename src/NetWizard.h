@@ -175,6 +175,7 @@ class NetWizard {
 
     bool connect();
     bool connect(const char* ssid, const char* password);
+    void erase();
     void disconnect();
     void reset();
     void loop();

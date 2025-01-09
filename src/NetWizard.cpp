@@ -230,6 +230,21 @@ bool NetWizard::connect(const char* ssid, const char* password) {
   return true;
 }
 
+void NetWizard::erase() {
+  Preferences prefs;
+  prefs.begin("nw_creds", false);
+  prefs.putString("ssid", "");
+  prefs.putString("password", "");
+  // prefs.putChar("b0", _nw.sta.bssid[0]);
+  // prefs.putChar("b1", _nw.sta.bssid[1]);
+  // prefs.putChar("b2", _nw.sta.bssid[2]);
+  // prefs.putChar("b3", _nw.sta.bssid[3]);
+  // prefs.putChar("b4", _nw.sta.bssid[4]);
+  // prefs.putChar("b5", _nw.sta.bssid[5]);
+  // prefs.putUChar("channel", _nw.sta.channel);
+  prefs.end();
+}
+
 void NetWizard::disconnect() {
   _disconnect();
 }
