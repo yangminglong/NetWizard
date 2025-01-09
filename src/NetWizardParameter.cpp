@@ -16,7 +16,7 @@ NetWizardParameter::NetWizardParameter(NetWizard *parent, const int type, const 
   _parent->addParameter(this);
 }
 
-const int NetWizardParameter::getType() {
+int NetWizardParameter::getType() {
   return _type;
 }
 

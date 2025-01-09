@@ -24,7 +24,7 @@ class NetWizardParameter {
     NetWizardParameter(NetWizard *parent, const int type, const char* name, const char* value);
     NetWizardParameter(NetWizard *parent, const int type, const char* name, const char* value, const char* placeholder);
 
-    const int getType();
+    int getType();
 
     [[deprecated("getValue has been replaced by getValueStr()")]]
     const String& getValue();

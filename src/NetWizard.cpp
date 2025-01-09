@@ -348,6 +348,10 @@ void NetWizard::loop() {
         }
         break;
       }
+      case NetWizardPortalState::SUCCESS:
+      case NetWizardPortalState::FAILED:
+      case NetWizardPortalState::TIMEOUT:
+        break;
     }
   }
 
@@ -656,7 +660,7 @@ bool NetWizard::_parseConfigJson(JsonArray& arr) {
   for (uint8_t i = 0; i < arr.size(); i++) {
     JsonObject obj = arr[i];
     // check if id and value are present
-    if (!obj.containsKey("id") || !obj.containsKey("v")) {
+    if (!obj["id"].is<JsonVariant>() || !obj["v"].is<JsonVariant>()) {
       return false;
     }
     // value must be a string
@@ -686,9 +690,9 @@ bool NetWizard::_parseConfigJson(JsonArray& arr) {
 
 bool NetWizard::_parseCredentialsJson(JsonObject& obj) {
   if (
-    obj.containsKey("ssid")
+    obj["ssid"].is<const char*>()
     && obj["ssid"].is<const char*>()
-    && obj.containsKey("psk")
+    && obj["psk"].is<const char*>()
     && obj["psk"].is<const char*>()
   ) {
     _nw.portal.sta.ssid = obj["ssid"].as<const char*>();
@@ -769,7 +773,7 @@ void NetWizard::_startHTTP() {
       }
 
       // return scan data
-      uint16_t n = WiFi.scanComplete();
+      int16_t n = WiFi.scanComplete();
       #if defined(ESP8266) || defined(ESP32)
         if (n == WIFI_SCAN_RUNNING) {
           return request->send(202, "text/plain", "");
@@ -909,7 +913,7 @@ void NetWizard::_startHTTP() {
       }
 
       // return scan data
-      uint16_t n = WiFi.scanComplete();
+      int16_t n = WiFi.scanComplete();
       #if defined(ESP8266) || defined(ESP32)
         if (n == WIFI_SCAN_RUNNING) {
           _server->send(202, "application/json", "[]");
@@ -966,19 +970,19 @@ void NetWizard::_startHTTP() {
 
       JsonObject obj = json.as<JsonObject>();
 
-      if (obj.containsKey("params") && obj["params"].is<JsonArray>()) {
+      if (obj["params"].is<JsonVariant>() && obj["params"].is<JsonArray>()) {
         JsonArray params = obj["params"];
         if (!_parseConfigJson(params)) {
           return _server->send(400, "text/plain", "Invalid request data");
         } else {
           // If we only got params, then we can set the state to SUCCESS
-          if (!obj.containsKey("credentials")) {
+          if (!obj["credentials"].is<JsonObject>()) {
             _nw.portal.state = NetWizardPortalState::SUCCESS;
           }
         }
       }
 
-      if (obj.containsKey("credentials") && obj["credentials"].is<JsonObject>()) {
+      if (obj["credentials"].is<JsonObject>()) {
         JsonObject credentials = obj["credentials"];
         if (!_parseCredentialsJson(credentials)) {
           return _server->send(400, "text/plain", "Invalid request data");
