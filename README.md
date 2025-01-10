@@ -11,7 +11,7 @@
 
 <b>NetWizard</b> is a user-friendly yet robust WiFi manager and captive portal library for wireless microcontrollers. Eliminate the trouble of hard-coding WiFi credentials by letting NetWizard handle the networking for your device!
 
-Additionally, NetWizard lets you create a custom configuration page of your choice which is shown at the time of setup. The possibilities are endless! 
+Additionally, NetWizard lets you create a custom configuration page of your choice which is shown at the time of setup. The possibilities are endless!
 
 <br/>
 
@@ -55,12 +55,12 @@ NetWizard works on the following microcontrollers/boards:
 
 Netwizard Pro comes with the following extended functionality:
 
-- Exclusive Parameters
+- Exclusive Parameters (Password Input, Toggle and more)
 - Links
 - Statistics
 - Whitelabel / Branding
 - UI Source
-- Commercial License (SCL-1.1)
+- Softt Commercial License 1.2
 
 <br> <b>Available here: </b>
 
@@ -86,4 +86,4 @@ Netwizard Pro comes with the following extended functionality:
 
 NetWizard open-source edition is licensed under Affero General Public License v3.0 ( AGPL-3.0 ).
 
-If you are intending to use NetWizard in a commercial project, please consider purchasing [NetWizard Pro](https://netwizard.pro?ref=ghlicense) which comes with a less restrictive SOFTT Commercial License 1.1 ( SCL-1.1 ).
+If you are intending to use NetWizard in a commercial project, please consider purchasing [NetWizard Pro](https://netwizard.pro?ref=ghlicense) which comes with a less restrictive SOFTT Commercial License 1.2 (SCL-1.2).
