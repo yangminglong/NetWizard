@@ -277,6 +277,7 @@ void NetWizard::loop() {
   if (_dns != nullptr) {
     // Check if DNS server is running
     if (!_dns_running) {
+      delay(100);  // Add a small delay here before checking ESP32 condition
       #if defined(ESP32)
         if (WiFi.AP.hasIP()) {
           _dns->start(53, "*", WiFi.AP.localIP());
