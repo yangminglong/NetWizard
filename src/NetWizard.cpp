@@ -424,6 +424,7 @@ void NetWizard::_connect(const char* ssid, const char* password) {
   WiFi.setHostname(_nw.hostname.c_str());
   // Connect to WiFi
   WiFi.begin(ssid, password);
+  WiFi.setAutoReconnect(true);
   _nw.status = NetWizardConnectionStatus::CONNECTING;
 }
 
