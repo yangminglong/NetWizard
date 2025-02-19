@@ -49,8 +49,8 @@ jobs:
             index_url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
           
           - name: CI Pico 2W | RP2350+W
-            core: rp2040:rp2350
-            board: rp2040:rp2350:rpipico2w
+            core: rp2040:rp2040
+            board: rp2040:rp2040:rpipico2w
             index_url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
     steps:
       - name: Checkout
