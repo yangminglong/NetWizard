@@ -829,19 +829,19 @@ void NetWizard::_startHTTP() {
 
       JsonObject obj = json.as<JsonObject>();
 
-      if (obj.containsKey("params") && obj["params"].is<JsonArray>()) {
+      if (obj["params"].is<JsonArray>()) {
         JsonArray params = obj["params"];
         if (!_parseConfigJson(params)) {
           return request->send(400, "text/plain", "Invalid request data");
         } else {
           // If we only got params, then we can set the state to SUCCESS
-          if (!obj.containsKey("credentials")) {
+          if (!obj["credentials"].is<JsonObject>()) {
             _nw.portal.state = NetWizardPortalState::SUCCESS;
           }
         }
       }
 
-      if (obj.containsKey("credentials") && obj["credentials"].is<JsonObject>()) {
+      if (obj["credentials"].is<JsonObject>()) {
         JsonObject credentials = obj["credentials"];
         if (!_parseCredentialsJson(credentials)) {
           return request->send(400, "text/plain", "Invalid request data");
@@ -987,7 +987,7 @@ void NetWizard::_startHTTP() {
 
       JsonObject obj = json.as<JsonObject>();
 
-      if (obj["params"].is<JsonVariant>() && obj["params"].is<JsonArray>()) {
+      if (obj["params"].is<JsonArray>()) {
         JsonArray params = obj["params"];
         if (!_parseConfigJson(params)) {
           return _server->send(400, "text/plain", "Invalid request data");

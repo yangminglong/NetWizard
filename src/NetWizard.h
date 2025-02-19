@@ -1,10 +1,10 @@
 /*
- _   _      _ __        ___                  _ 
+ _   _      _ __        ___                  _
 | \ | | ___| |\ \      / (_)______ _ _ __ __| |
 |  \| |/ _ \ __\ \ /\ / /| |_  / _` | '__/ _` |
 | |\  |  __/ |_ \ V  V / | |/ / (_| | | | (_| |
 |_| \_|\___|\__| \_/\_/  |_/___\__,_|_|  \__,_|
-                                               
+
 An easy-to-use yet powerful WiFi manager and captive portal library for wireless microcontrollers.
 
 Author: Ayush Sharma (ayush@softt.io)
@@ -16,7 +16,7 @@ Upgrade to NetWizard Pro: https://netwizard.pro
 #define NETWIZARD_H
 
 #ifndef NETWIZARD_USE_ASYNC_WEBSERVER
-  #define NETWIZARD_USE_ASYNC_WEBSERVER 0
+  #define NETWIZARD_USE_ASYNC_WEBSERVER 1
 #endif
 
 #ifndef NETWIZARD_DEBUG
@@ -26,7 +26,7 @@ Upgrade to NetWizard Pro: https://netwizard.pro
 #if NETWIZARD_DEBUG
   #define NETWIZARD_DEBUG_MSG(x) Serial.printf("%s %s", "[NetWizard]", x)
 #else
-  #define NETWIZARD_DEBUG_MSG(x) 
+  #define NETWIZARD_DEBUG_MSG(x)
 #endif
 
 #define NETWIZARD_PORTAL_TIMEOUT      60000 * 5  // 5 minutes
@@ -157,7 +157,7 @@ class NetWizard {
     // authentication
     void setAuthentication(String& username, String& password);
     void setAuthentication(const char* username, const char* password);
-    
+
     void setHostname(const char* hostname);
     void setHostname(String& hostname);
     void setConnectTimeout(unsigned long timeout);
@@ -234,7 +234,7 @@ class NetWizard {
         // uint8_t bssid[6];
         // uint8_t channel = 0;
       } sta;
-      
+
       // portal parameters
       struct {
         bool active = false;
@@ -273,7 +273,7 @@ class NetWizard {
           unsigned long start_millis = 0;
           uint16_t last_status = 0;
         } scan;
-        
+
         struct {
           uint32_t counter = 0;
           Vector<NetWizardParameter*> parameters;
