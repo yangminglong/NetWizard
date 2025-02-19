@@ -68,7 +68,7 @@ Upgrade to NetWizard Pro: https://netwizard.pro
     #define NETWIZARD_REQ_HANDLER RequestHandler
   #endif
   #define HARDWARE "ESP32"
-#elif defined(TARGET_RP2040)
+#elif defined(TARGET_RP2040) || defined(PICO_RP2040)
   #include "WiFi.h"
   #if NETWIZARD_USE_ASYNC_WEBSERVER == 1
     #include "AsyncTCP_RP2040W.h"
@@ -82,7 +82,7 @@ Upgrade to NetWizard Pro: https://netwizard.pro
     #define NETWIZARD_REQ_HANDLER RequestHandler
   #endif
   #define HARDWARE "RP2040"
-#elif defined(TARGET_RP2350)
+#elif defined(TARGET_RP2350) || defined(PICO_RP2350)
   #include "WiFi.h"
   #if NETWIZARD_USE_ASYNC_WEBSERVER == 1
     #include "AsyncTCP_RP2040W.h"
