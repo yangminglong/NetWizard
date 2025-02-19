@@ -4,21 +4,21 @@ on:
   push:
     paths-ignore:
       - "**/**.md"
-      - "/LICENSE"
-      - "/keywords.txt"
-      - "/library.json"
-      - "/library.properties"
-      - "/portal"
-      - "/docs/*"
+      - "LICENSE"
+      - "keywords.txt"
+      - "library.json"
+      - "library.properties"
+      - "portal"
+      - "docs/*"
   pull_request:
     paths-ignore:
       - "**/**.md"
-      - "/LICENSE"
-      - "/keywords.txt"
-      - "/library.json"
-      - "/library.properties"
-      - "/portal"
-      - "/docs/*"
+      - "LICENSE"
+      - "keywords.txt"
+      - "library.json"
+      - "library.properties"
+      - "portal"
+      - "docs/*"
 
 jobs:
   arduino:
@@ -64,18 +64,18 @@ jobs:
 
       - name: Install AsyncTCP (ESP32)
         if: ${{ matrix.core == 'esp32:esp32' }}
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/AsyncTCP#v3.3.2
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ESP32Async/AsyncTCP#v3.3.5
 
       - name: Install ESPAsyncTCP (ESP8266)
         if: ${{ matrix.core == 'esp8266:esp8266' }}
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/esphome-ESPAsyncTCP#v2.0.0
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ESP32Async/ESPAsyncTCP#v2.0.0
 
       - name: Install AsyncTCP (RP2040)
         if: ${{ matrix.core == 'rp2040:rp2040' }}
         run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/khoih-prog/AsyncTCP_RP2040W#v1.2.0
 
       - name: Install ESPAsyncWebServer
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/mathieucarbou/ESPAsyncWebServer#v3.6.0
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ESP32Async/ESPAsyncWebServer#v3.7.0
 
       - name: Install ArduinoJson
         run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/bblanchon/ArduinoJson#v7.3.0
@@ -96,38 +96,52 @@ jobs:
         run: arduino-cli compile --library . --warnings none -b ${{ matrix.board }} "examples/AsyncDemo/AsyncDemo.ino"
 
   platformio:
-    name: pio ${{ matrix.name }}
+    name: pio ${{ matrix.env }}:${{ matrix.board }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: esp32dev|arduino-3
-            board: esp32dev
-            platform: espressif32
-            opts: "--project-option 'lib_compat_mode = strict' --project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.3, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.3/esp32-arduino-libs-3.0.3.zip'"
-          - name: esp32-s3-devkitc-1|arduino-3
-            board: esp32-s3-devkitc-1
-            platform: espressif32
-            opts: "--project-option 'lib_compat_mode = strict' --project-option 'platform_packages=platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git#3.0.3, platform_packages=platformio/framework-arduinoespressif32-libs @ https://github.com/espressif/arduino-esp32/releases/download/3.0.3/esp32-arduino-libs-3.0.3.zip'"
-          # - name: huzzah|espressif8266
+          # - env: ci-esp8266
           #   board: huzzah
-          #   platform: espressif8266
-          #   opts: "--project-option 'lib_compat_mode = strict'"
+          # - env: ci-esp8266
+          #   board: d1_mini
+          - env: ci-arduino-3
+            board: esp32dev
+          - env: ci-arduino-3
+            board: esp32-s2-saola-1
+          - env: ci-arduino-3
+            board: esp32-s3-devkitc-1
+          - env: ci-arduino-3
+            board: esp32-c3-devkitc-02
+          - env: ci-arduino-3
+            board: esp32-c6-devkitc-1
+          - env: rpipico|arduino-pico
+            board: rpipico-rp2040
+            platform: https://github.com/maxgerhardt/platform-raspberrypi.git
+            opts: "--project-option 'board_build.core=earlephilhower'"
+          - env: rpipico2|arduino-pico
+            board: rpipico2-rp2350
+            platform: https://github.com/maxgerhardt/platform-raspberrypi.git
+            opts: "--project-option 'board_build.core=earlephilhower'"
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up cache
         uses: actions/cache@v4
         with:
+          key: ${{ runner.os }}-pio
           path: |
             ~/.platformio
             ~/.cache/pip
-          key: ${{ matrix.name }}
+      
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+      
       - name: Install PlatformIO
         run: pip install platformio
+      
       - name: Install Platform
         run: platformio platform install ${{ matrix.platform }}
 
