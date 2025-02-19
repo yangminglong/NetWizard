@@ -309,7 +309,7 @@ class NetWizard {
   #else
     #if defined(ESP8266) || defined(ESP32)
       static bool _onAPFilter(NETWIZARD_WEBSERVER &server);
-    #elif defined(TARGET_RP2040)
+    #elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
       static bool _onAPFilter(HTTPServer &server);
     #endif
   #endif
