@@ -534,6 +534,7 @@ void NetWizard::_generateSchemaJson(String& str) {
     obj["n"] = p->_name;
     obj["v"] = p->_value;
     obj["p"] = p->_placeholder;
+    obj["r"] = p->_required;
   }
 
   // Serialize JSON to string
