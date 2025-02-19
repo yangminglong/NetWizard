@@ -117,11 +117,11 @@ jobs:
           - env: ci-arduino-3
             board: esp32-c6-devkitc-1
           - env: rpipico|arduino-pico
-            board: rpipico-rp2040
+            board: rpipico
             platform: https://github.com/maxgerhardt/platform-raspberrypi.git
             opts: "--project-option 'board_build.core=earlephilhower'"
           - env: rpipico2|arduino-pico
-            board: rpipico2-rp2350
+            board: rpipico2
             platform: https://github.com/maxgerhardt/platform-raspberrypi.git
             opts: "--project-option 'board_build.core=earlephilhower'"
     steps:
@@ -143,7 +143,8 @@ jobs:
         run: pip install platformio
       
       - name: Install Platform
+        if: !!matrix.platform
         run: platformio platform install ${{ matrix.platform }}
 
-      - run: platformio ci "examples/Demo/Demo.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
-      - run: PLATFORMIO_BUILD_FLAGS="-DNETWIZARD_USE_ASYNC_WEBSERVER=1" platformio ci "examples/AsyncDemo/AsyncDemo.ino" -l '.' -b ${{ matrix.board }} ${{ matrix.opts }}
+      - run: PLATFORMIO_SRC_DIR=examples/Demo PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
+      - run: PLATFORMIO_BUILD_FLAGS="-DNETWIZARD_USE_ASYNC_WEBSERVER=1" PLATFORMIO_SRC_DIR=examples/AsyncDemo PIO_BOARD=${{ matrix.board }} pio run -e ${{ matrix.env }}
