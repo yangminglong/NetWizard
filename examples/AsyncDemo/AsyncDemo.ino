@@ -14,13 +14,14 @@
   Works with following hardware:
   - ESP32
   - RP2040+W (Example: Raspberry Pi Pico W)
+  - RP2350+W (Example: Raspberry Pi Pico 2W)
 
   Important note for RP2040 users:
-  - RP2040 requires LittleFS partition for saving credentials.
+  - RP2040/RP2350 requires LittleFS partition for saving credentials.
     Without LittleFS partition, the app will fail to persist any data.
     Make sure to select Tools > Flash Size > "2MB (Sketch 1MB, FS 1MB)" option.
   - Doesn't work with bare RP2040, it requires WiFi module/chip (network co-processor)
-    like in Pico W for NetWizard to work.
+    like in Pico W / Pico 2W for NetWizard to work.
 
   NOTE: Async mode requires ESPAsyncWebServer dependency and
   please make sure to enable async flag in NetWizard.h as per the docs:
@@ -33,7 +34,7 @@
 
 #if defined(ESP32)
   #include <AsyncTCP.h>
-#elif defined(RP2040)
+#elif defined(TARGET_RP2040) || defined(TARGET_RP2350)
   #include <AsyncTCP_RP2040W.h>
 #endif
 #include <ESPAsyncWebServer.h>
