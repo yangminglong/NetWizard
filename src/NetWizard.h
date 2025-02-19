@@ -16,7 +16,7 @@ Upgrade to NetWizard Pro: https://netwizard.pro
 #define NETWIZARD_H
 
 #ifndef NETWIZARD_USE_ASYNC_WEBSERVER
-  #define NETWIZARD_USE_ASYNC_WEBSERVER 1
+  #define NETWIZARD_USE_ASYNC_WEBSERVER 0
 #endif
 
 #ifndef NETWIZARD_DEBUG
