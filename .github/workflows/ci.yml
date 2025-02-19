@@ -135,13 +135,13 @@ jobs:
             board: esp32-c6-devkitc-1
           
           - name: CI Pico W | RP2040+W
-            env: rpipicow|arduino-pico
+            env: ci-rp2040
             board: rpipicow
             platform: https://github.com/maxgerhardt/platform-raspberrypi.git
             opts: "--project-option 'board_build.core=earlephilhower'"
 
           - name: CI Pico 2W | RP2350+W
-            env: rpipico2w|arduino-pico
+            env: ci-rp2350
             board: rpipico2w
             platform: https://github.com/maxgerhardt/platform-raspberrypi.git
             opts: "--project-option 'board_build.core=earlephilhower'"
