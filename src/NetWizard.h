@@ -82,6 +82,20 @@ Upgrade to NetWizard Pro: https://netwizard.pro
     #define NETWIZARD_REQ_HANDLER RequestHandler
   #endif
   #define HARDWARE "RP2040"
+#elif defined(TARGET_RP2350)
+  #include "WiFi.h"
+  #if NETWIZARD_USE_ASYNC_WEBSERVER == 1
+    #include "AsyncTCP_RP2040W.h"
+    #include "AsyncJson.h"
+    #include "ESPAsyncWebServer.h"
+    #define NETWIZARD_WEBSERVER AsyncWebServer
+    #define NETWIZARD_REQ_HANDLER AsyncWebHandler
+  #else
+    #include "WebServer.h"
+    #define NETWIZARD_WEBSERVER WebServer
+    #define NETWIZARD_REQ_HANDLER RequestHandler
+  #endif
+  #define HARDWARE "RP2350"
 #endif
 
 #include "DNSServer.h"
