@@ -940,7 +940,7 @@ void NetWizard::_startHTTP() {
           _restartScan();
           _server->send(202, "application/json", "[]");
           return _server->client().stop(); // Stop is needed because we sent no content length
-      #elif defined (TARGET_RP2040)
+      #elif defined (TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
         if (!n) {
         _server->send(202, "application/json", "[]");
         return _server->client().stop(); // Stop is needed because we sent no content length
