@@ -35,7 +35,7 @@
 #if defined(ESP32)
   #include <AsyncTCP.h>
 #elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
-  #include <AsyncTCP_RP2040W.h>
+  #include <RPAsyncTCP.h>
 #endif
 #include <ESPAsyncWebServer.h>
 #include <NetWizard.h>
