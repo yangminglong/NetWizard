@@ -88,10 +88,7 @@ void NetWizard::autoConnect(const char* ssid, const char* password) {
     // Credentials loaded successfully
     WiFi.mode(WIFI_STA);
     WiFi.persistent(false);
-    #if defined(ESP8266) || defined(ESP32)
-      WiFi.setAutoReconnect(false);
-    #endif
-    _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str());
+    _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str(), true);
 
     // Check if connected within connection timeout
     unsigned long startMillis = millis();
@@ -116,10 +113,7 @@ void NetWizard::autoConnect(const char* ssid, const char* password) {
           NETWIZARD_DEBUG_MSG("Trying to connect again...\n");
           WiFi.mode(WIFI_STA);
           WiFi.persistent(false);
-          #if defined(ESP8266) || defined(ESP32)
-            WiFi.setAutoReconnect(false);
-          #endif
-          _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str());
+          _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str(), true);
           // last connect time
           lastConnectMillis = millis();
         }
@@ -212,7 +206,7 @@ IPAddress NetWizard::subnetMask() {
 
 bool NetWizard::connect() {
   if (_nw.sta.configured) {
-    _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str());
+    _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str(), true);
     return true;
   }
   return false;
@@ -226,7 +220,7 @@ bool NetWizard::connect(const char* ssid, const char* password) {
   // save credentials
   _saveSTACredentials();
   // connect
-  _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str());
+  _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str(), true);
   return true;
 }
 
@@ -332,10 +326,7 @@ void NetWizard::loop() {
         NETWIZARD_DEBUG_MSG("Password: " + _nw.portal.sta.password + " \n");
         // Connect to temporary credentials
         WiFi.persistent(false);
-        #if defined(ESP8266) || defined(ESP32)
-          WiFi.setAutoReconnect(false);
-        #endif
-        _connect(_nw.portal.sta.ssid.c_str(), _nw.portal.sta.password.c_str());
+        _connect(_nw.portal.sta.ssid.c_str(), _nw.portal.sta.password.c_str(), false);
         _nw.portal.connect_millis = millis();
         _nw.portal.state = NetWizardPortalState::WAITING_FOR_CONNECTION;
         break;
@@ -419,12 +410,15 @@ void NetWizard::removeParameter(NetWizardParameter* parameter) {
   }
 }
 
-void NetWizard::_connect(const char* ssid, const char* password) {
+void NetWizard::_connect(const char* ssid, const char* password, bool autoreconnect) {
+  // Set auto reconnect
+  if (autoreconnect) {
+    WiFi.setAutoReconnect(true);
+  }
   // Set hostname
   WiFi.setHostname(_nw.hostname.c_str());
   // Connect to WiFi
   WiFi.begin(ssid, password);
-  WiFi.setAutoReconnect(true);
   _nw.status = NetWizardConnectionStatus::CONNECTING;
 }
 
@@ -1097,9 +1091,6 @@ void NetWizard::_stopHTTP() {
 void NetWizard::_startPortal() {
   WiFi.mode(WIFI_AP_STA);
   WiFi.persistent(false);
-  #if defined(ESP8266) || defined(ESP32)
-    WiFi.setAutoReconnect(false);
-  #endif
   if (this->isConfigured()) {
     // If connection status is not NOT_FOUND, then disconnect
     if (_nw.status == NetWizardConnectionStatus::NOT_FOUND) {
@@ -1107,7 +1098,7 @@ void NetWizard::_startPortal() {
       _disconnect();
     } else {
       NETWIZARD_DEBUG_MSG("Starting portal in AP+STA mode\n");
-      _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str());
+      _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str(), true);
     }
     WiFi.softAP(_nw.portal.ap.ssid.c_str(), _nw.portal.ap.password.c_str());
   } else {
@@ -1164,10 +1155,7 @@ void NetWizard::_stopPortal() {
     NETWIZARD_DEBUG_MSG("Connecting to configured connection\n");
     WiFi.mode(WIFI_STA);
     WiFi.persistent(false);
-    #if defined(ESP8266) || defined(ESP32)
-      WiFi.setAutoReconnect(true);
-    #endif
-    _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str());
+    _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str(), true);
   } else {
     NETWIZARD_DEBUG_MSG("Switching off wifi as the device is not configured\n");
     WiFi.mode(WIFI_OFF);

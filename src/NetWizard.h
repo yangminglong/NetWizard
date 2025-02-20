@@ -269,7 +269,7 @@ class NetWizard {
     } _nw;
 
     // helper functions
-    void _connect(const char* ssid, const char* password);
+    void _connect(const char* ssid, const char* password, bool autoreconnect = false);
     void _disconnect();
     void _saveSTACredentials();
     void _loadSTACredentials();
