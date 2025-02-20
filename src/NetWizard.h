@@ -71,7 +71,7 @@ Upgrade to NetWizard Pro: https://netwizard.pro
 #elif defined(TARGET_RP2040) || defined(PICO_RP2040)
   #include "WiFi.h"
   #if NETWIZARD_USE_ASYNC_WEBSERVER == 1
-    #include "AsyncTCP_RP2040W.h"
+    #include "RPAsyncTCP.h"
     #include "AsyncJson.h"
     #include "ESPAsyncWebServer.h"
     #define NETWIZARD_WEBSERVER AsyncWebServer
@@ -85,7 +85,7 @@ Upgrade to NetWizard Pro: https://netwizard.pro
 #elif defined(TARGET_RP2350) || defined(PICO_RP2350)
   #include "WiFi.h"
   #if NETWIZARD_USE_ASYNC_WEBSERVER == 1
-    #include "AsyncTCP_RP2040W.h"
+    #include "RPAsyncTCP.h"
     #include "AsyncJson.h"
     #include "ESPAsyncWebServer.h"
     #define NETWIZARD_WEBSERVER AsyncWebServer
