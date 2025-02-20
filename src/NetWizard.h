@@ -1,10 +1,10 @@
 /*
- _   _      _ __        ___                  _ 
+ _   _      _ __        ___                  _
 | \ | | ___| |\ \      / (_)______ _ _ __ __| |
 |  \| |/ _ \ __\ \ /\ / /| |_  / _` | '__/ _` |
 | |\  |  __/ |_ \ V  V / | |/ / (_| | | | (_| |
 |_| \_|\___|\__| \_/\_/  |_/___\__,_|_|  \__,_|
-                                               
+
 An easy-to-use yet powerful WiFi manager and captive portal library for wireless microcontrollers.
 
 Author: Ayush Sharma (ayush@softt.io)
@@ -26,7 +26,7 @@ Upgrade to NetWizard Pro: https://netwizard.pro
 #if NETWIZARD_DEBUG
   #define NETWIZARD_DEBUG_MSG(x) Serial.printf("%s %s", "[NetWizard]", x)
 #else
-  #define NETWIZARD_DEBUG_MSG(x) 
+  #define NETWIZARD_DEBUG_MSG(x)
 #endif
 
 #define NETWIZARD_PORTAL_TIMEOUT      60000 * 5  // 5 minutes
@@ -68,10 +68,10 @@ Upgrade to NetWizard Pro: https://netwizard.pro
     #define NETWIZARD_REQ_HANDLER RequestHandler
   #endif
   #define HARDWARE "ESP32"
-#elif defined(TARGET_RP2040)
+#elif defined(TARGET_RP2040) || defined(PICO_RP2040)
   #include "WiFi.h"
   #if NETWIZARD_USE_ASYNC_WEBSERVER == 1
-    #include "AsyncTCP_RP2040W.h"
+    #include "RPAsyncTCP.h"
     #include "AsyncJson.h"
     #include "ESPAsyncWebServer.h"
     #define NETWIZARD_WEBSERVER AsyncWebServer
@@ -82,6 +82,20 @@ Upgrade to NetWizard Pro: https://netwizard.pro
     #define NETWIZARD_REQ_HANDLER RequestHandler
   #endif
   #define HARDWARE "RP2040"
+#elif defined(TARGET_RP2350) || defined(PICO_RP2350)
+  #include "WiFi.h"
+  #if NETWIZARD_USE_ASYNC_WEBSERVER == 1
+    #include "RPAsyncTCP.h"
+    #include "AsyncJson.h"
+    #include "ESPAsyncWebServer.h"
+    #define NETWIZARD_WEBSERVER AsyncWebServer
+    #define NETWIZARD_REQ_HANDLER AsyncWebHandler
+  #else
+    #include "WebServer.h"
+    #define NETWIZARD_WEBSERVER WebServer
+    #define NETWIZARD_REQ_HANDLER RequestHandler
+  #endif
+  #define HARDWARE "RP2350"
 #endif
 
 #include "DNSServer.h"
@@ -143,7 +157,7 @@ class NetWizard {
     // authentication
     void setAuthentication(String& username, String& password);
     void setAuthentication(const char* username, const char* password);
-    
+
     void setHostname(const char* hostname);
     void setHostname(String& hostname);
     void setConnectTimeout(unsigned long timeout);
@@ -220,7 +234,7 @@ class NetWizard {
         // uint8_t bssid[6];
         // uint8_t channel = 0;
       } sta;
-      
+
       // portal parameters
       struct {
         bool active = false;
@@ -259,7 +273,7 @@ class NetWizard {
           unsigned long start_millis = 0;
           uint16_t last_status = 0;
         } scan;
-        
+
         struct {
           uint32_t counter = 0;
           Vector<NetWizardParameter*> parameters;
@@ -295,7 +309,7 @@ class NetWizard {
   #else
     #if defined(ESP8266) || defined(ESP32)
       static bool _onAPFilter(NETWIZARD_WEBSERVER &server);
-    #elif defined(TARGET_RP2040)
+    #elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
       static bool _onAPFilter(HTTPServer &server);
     #endif
   #endif

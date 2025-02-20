@@ -23,6 +23,7 @@ class NetWizardParameter {
     NetWizardParameter(NetWizard *parent, const int type, const char* name);
     NetWizardParameter(NetWizard *parent, const int type, const char* name, const char* value);
     NetWizardParameter(NetWizard *parent, const int type, const char* name, const char* value, const char* placeholder);
+    NetWizardParameter(NetWizard *parent, const int type, const char* name, const char* value, const char* placeholder, bool required);
 
     int getType();
 
@@ -39,6 +40,8 @@ class NetWizardParameter {
     String getPlaceholder();
     void setPlaceholder(const char* placeholder);
 
+    void setRequired(bool required);
+
     ~NetWizardParameter();
   private:
     NetWizard *_parent;
@@ -47,6 +50,7 @@ class NetWizardParameter {
     const char* _name;
     String _value;
     String _placeholder;
+    bool _required;
 
     friend class NetWizard;
 };

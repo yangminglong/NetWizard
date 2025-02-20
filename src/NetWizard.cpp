@@ -428,7 +428,7 @@ void NetWizard::_disconnect() {
     WiFi.disconnect(false, true);
   #elif defined(ESP32)
     WiFi.disconnect(false, true, 200);
-  #elif defined(TARGET_RP2040)
+  #elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
     WiFi.disconnect(false);
   #endif
   _nw.status = NetWizardConnectionStatus::DISCONNECTED;
@@ -529,6 +529,7 @@ void NetWizard::_generateSchemaJson(String& str) {
     obj["n"] = p->_name;
     obj["v"] = p->_value;
     obj["p"] = p->_placeholder;
+    obj["r"] = p->_required;
   }
 
   // Serialize JSON to string
@@ -556,7 +557,7 @@ void NetWizard::_generateScanJson(String& str) {
     obj["s"] = WiFi.SSID(i);
     #if defined(ESP8266) || defined(ESP32)
       obj["b"] = WiFi.BSSIDstr(i);
-    #elif defined(TARGET_RP2040)
+    #elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
       String bssid;
       uint8_t b[6];
       WiFi.BSSID(i, b);
@@ -641,7 +642,7 @@ void NetWizard::_generateScanJson(String& str) {
           enc = NetWizardEncryptionType::UNKNOWN;
           break;
       }
-    #elif defined(TARGET_RP2040)
+    #elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
       switch (WiFi.encryptionType(i)) {
         case ENC_TYPE_NONE:
           enc = NetWizardEncryptionType::OPEN;
@@ -792,7 +793,7 @@ void NetWizard::_startHTTP() {
           // restart scan
           _restartScan();
           return request->send(202, "text/plain", "");
-      #elif defined(TARGET_RP2040)
+      #elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
         if (!n) {
           return request->send(202, "text/plain", "");
       #endif
@@ -823,19 +824,19 @@ void NetWizard::_startHTTP() {
 
       JsonObject obj = json.as<JsonObject>();
 
-      if (obj.containsKey("params") && obj["params"].is<JsonArray>()) {
+      if (obj["params"].is<JsonArray>()) {
         JsonArray params = obj["params"];
         if (!_parseConfigJson(params)) {
           return request->send(400, "text/plain", "Invalid request data");
         } else {
           // If we only got params, then we can set the state to SUCCESS
-          if (!obj.containsKey("credentials")) {
+          if (!obj["credentials"].is<JsonObject>()) {
             _nw.portal.state = NetWizardPortalState::SUCCESS;
           }
         }
       }
 
-      if (obj.containsKey("credentials") && obj["credentials"].is<JsonObject>()) {
+      if (obj["credentials"].is<JsonObject>()) {
         JsonObject credentials = obj["credentials"];
         if (!_parseCredentialsJson(credentials)) {
           return request->send(400, "text/plain", "Invalid request data");
@@ -934,7 +935,7 @@ void NetWizard::_startHTTP() {
           _restartScan();
           _server->send(202, "application/json", "[]");
           return _server->client().stop(); // Stop is needed because we sent no content length
-      #elif defined (TARGET_RP2040)
+      #elif defined (TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
         if (!n) {
         _server->send(202, "application/json", "[]");
         return _server->client().stop(); // Stop is needed because we sent no content length
@@ -981,7 +982,7 @@ void NetWizard::_startHTTP() {
 
       JsonObject obj = json.as<JsonObject>();
 
-      if (obj["params"].is<JsonVariant>() && obj["params"].is<JsonArray>()) {
+      if (obj["params"].is<JsonArray>()) {
         JsonArray params = obj["params"];
         if (!_parseConfigJson(params)) {
           return _server->send(400, "text/plain", "Invalid request data");
@@ -1173,14 +1174,14 @@ void NetWizard::_stopPortal() {
       return WiFi.AP.hasIP() && WiFi.AP.localIP() == request->client()->localIP();
     #elif defined(ESP8266)
       return WiFi.softAPIP() == request->client()->localIP();
-    #elif defined(TARGET_RP2040)
+    #elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
       return WiFi.softAPIP() == request->client()->localIP();
     #endif
   }
 #else
   #if defined(ESP8266) || defined(ESP32)
     bool NetWizard::_onAPFilter(NETWIZARD_WEBSERVER &server) {
-  #elif defined(TARGET_RP2040)
+  #elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
     bool NetWizard::_onAPFilter(HTTPServer &server) {
   #endif
     #if defined(ESP32)
@@ -1189,7 +1190,7 @@ void NetWizard::_stopPortal() {
     #elif defined(ESP8266)
       // Serial.printf("AP IP: %s, Client IP: %s\n", WiFi.softAPIP().toString().c_str(), server.client().localIP().toString().c_str());
       return WiFi.softAPIP() == server.client().localIP();
-    #elif defined(TARGET_RP2040)
+    #elif defined(TARGET_RP2040) || defined(TARGET_RP2350) || defined(PICO_RP2040) || defined(PICO_RP2350)
       // Serial.printf("AP IP: %s, Client IP: %s\n", WiFi.softAPIP().toString().c_str(), server.client().localIP().toString().c_str());
       return WiFi.softAPIP() == server.client().localIP();
     #endif
