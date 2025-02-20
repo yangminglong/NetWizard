@@ -411,10 +411,12 @@ void NetWizard::removeParameter(NetWizardParameter* parameter) {
 }
 
 void NetWizard::_connect(const char* ssid, const char* password, bool autoreconnect) {
-  // Set auto reconnect
-  if (autoreconnect) {
-    WiFi.setAutoReconnect(true);
-  }
+  #if defined(ESP8266) || defined(ESP32)
+    // Set auto reconnect
+    if (autoreconnect) {
+      WiFi.setAutoReconnect(true);
+    }
+  #endif
   // Set hostname
   WiFi.setHostname(_nw.hostname.c_str());
   // Connect to WiFi
