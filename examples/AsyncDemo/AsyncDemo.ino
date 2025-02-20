@@ -95,7 +95,7 @@ void setup(void) {
         status_str = "Unknown";
     }
 
-    Serial.printf("NW connection status changed: %s\n", status_str);
+    Serial.printf("NW connection status changed: %s\n", status_str.c_str());
     if (status == NetWizardConnectionStatus::CONNECTED) {
       // Local IP
       Serial.printf("Local IP: %s\n", NW.localIP().toString().c_str());
@@ -133,7 +133,7 @@ void setup(void) {
         state_str = "Unknown";
     }
 
-    Serial.printf("NW portal state changed: %s\n", state_str);
+    Serial.printf("NW portal state changed: %s\n", state_str.c_str());
   });
 
   NW.onConfig([&]() {
