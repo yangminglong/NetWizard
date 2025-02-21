@@ -31,6 +31,7 @@ NetWizard works on the following microcontrollers/boards:
 
 - ESP32
 - RP2040 + W (Pico W etc.)
+- RP2350 + W (Pico 2W etc.)
 - *( more coming soon )*
 
 <br/>
