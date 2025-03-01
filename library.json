@@ -19,13 +19,13 @@
     {
       "owner": "bblanchon",
       "name": "ArduinoJson",
-      "version": "^7.3.0",
+      "version": "^7.3.1",
       "platforms": ["espressif8266", "espressif32", "raspberrypi"]
     },
     {
       "owner": "ESP32Async",
       "name": "ESPAsyncWebServer",
-      "version": "^3.7.1",
+      "version": "^3.7.2",
       "platforms": ["espressif8266", "espressif32", "raspberrypi"]
     },
     {
@@ -35,7 +35,7 @@
       "platforms": ["espressif8266", "raspberrypi"]
     }
   ],
-  "version": "1.2.0",
+  "version": "1.2.1",
   "frameworks": "arduino",
   "platforms": ["espressif32", "raspberrypi"]
 }
