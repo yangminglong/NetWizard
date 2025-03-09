@@ -85,7 +85,10 @@ void NetWizard::autoConnect(const char* ssid, const char* password) {
     NETWIZARD_DEBUG_MSG("Connecting to saved credentials\n");
     NETWIZARD_DEBUG_MSG("SSID: " + _nw.sta.ssid + " \n");
     Serial.printf("Connecting to %s, %s\n", _nw.sta.ssid.c_str(), _nw.sta.password.c_str());
-    // Credentials loaded successfully
+    // Set hostname
+    if (_nw.hostname != "") {
+      WiFi.setHostname(_nw.hostname.c_str());
+    }
     WiFi.mode(WIFI_STA);
     WiFi.persistent(false);
     _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str(), true);
@@ -111,6 +114,10 @@ void NetWizard::autoConnect(const char* ssid, const char* password) {
           || _nw.status == NetWizardConnectionStatus::CONNECTION_FAILED
         ) {
           NETWIZARD_DEBUG_MSG("Trying to connect again...\n");
+          // Set hostname
+          if (_nw.hostname != "") {
+            WiFi.setHostname(_nw.hostname.c_str());
+          }
           WiFi.mode(WIFI_STA);
           WiFi.persistent(false);
           _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str(), true);
@@ -417,8 +424,6 @@ void NetWizard::_connect(const char* ssid, const char* password, bool autoreconn
       WiFi.setAutoReconnect(true);
     }
   #endif
-  // Set hostname
-  WiFi.setHostname(_nw.hostname.c_str());
   // Connect to WiFi
   WiFi.begin(ssid, password);
   _nw.status = NetWizardConnectionStatus::CONNECTING;
@@ -1092,6 +1097,10 @@ void NetWizard::_stopHTTP() {
 }
 
 void NetWizard::_startPortal() {
+  // Set hostname
+  if (_nw.hostname != "") {
+    WiFi.setHostname(_nw.hostname.c_str());
+  }
   WiFi.mode(WIFI_AP_STA);
   WiFi.persistent(false);
   if (this->isConfigured()) {
@@ -1156,6 +1165,10 @@ void NetWizard::_stopPortal() {
   WiFi.softAPdisconnect(true);
   if (this->isConfigured()) {
     NETWIZARD_DEBUG_MSG("Connecting to configured connection\n");
+    // Set hostname
+    if (_nw.hostname != "") {
+      WiFi.setHostname(_nw.hostname.c_str());
+    }
     WiFi.mode(WIFI_STA);
     WiFi.persistent(false);
     _connect(_nw.sta.ssid.c_str(), _nw.sta.password.c_str(), true);

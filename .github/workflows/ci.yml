@@ -46,14 +46,12 @@ jobs:
           - name: CI Pico W | RP2040+W
             core: rp2040:rp2040
             board: rp2040:rp2040:rpipicow
-            # index_url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
-            index_url: https://github.com/earlephilhower/arduino-pico/releases/download/4.4.3/package_rp2040_index.json
+            index_url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
           
           - name: CI Pico 2W | RP2350+W
             core: rp2040:rp2040
             board: rp2040:rp2040:rpipico2w
-            # index_url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
-            index_url: https://github.com/earlephilhower/arduino-pico/releases/download/4.4.3/package_rp2040_index.json
+            index_url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
     
     steps:
       - name: Checkout
@@ -83,10 +81,10 @@ jobs:
 
       - name: Install RPAsyncTCP (RP2040)
         if: ${{ matrix.core == 'rp2040:rp2040' }}
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ayushsharma82/RPAsyncTCP#v1.3.0
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ayushsharma82/RPAsyncTCP#v1.3.1
 
       - name: Install ESPAsyncWebServer
-        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ESP32Async/ESPAsyncWebServer#v3.7.1
+        run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/ESP32Async/ESPAsyncWebServer#v3.7.2
 
       - name: Install ArduinoJson
         run: ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true arduino-cli lib install --git-url https://github.com/bblanchon/ArduinoJson#v7.3.0
